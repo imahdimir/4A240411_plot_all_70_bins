@@ -19,7 +19,7 @@ def make_df_of_iids_from_bgen_open_obj(bg_opn) :
     return df
 
 def open_bgen_ret_iid_df_and_prob_arr(bgen_fp) :
-    """ """
+    pass
 
     ##
     if False :
