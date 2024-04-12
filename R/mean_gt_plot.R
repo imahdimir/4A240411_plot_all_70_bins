@@ -19,11 +19,11 @@ colnames(dta)[3] <- 'Info'
 dta$se = dta$std / sqrt(dta$n_snps)
 dta$Info = dta$Info / 100
 
-l1 <- c("Siblings (Dosages)", 'Parent-Offspring (Dosages)', 'Siblings (Hard Call)', 'Parent-Offspring (Hard Call)')
+l1 <- c("Dosages", 'Hard-Calls')
 l2 <- c("Siblings", "Parent-Offspring")
 
 # plot correlations
-ggplot(dta, aes(x = Info, y = mean, color=interaction(InfType, Genotype), shape=InfType)) +
+ggplot(dta, aes(x = Info, y = mean, color=Genotype, shape=InfType)) +
   geom_point() +
   geom_errorbar(aes(ymin=mean-1.96*se, ymax=mean+1.96*se), width=.01) +
   geom_line() +
@@ -35,7 +35,7 @@ ggplot(dta, aes(x = Info, y = mean, color=interaction(InfType, Genotype), shape=
 
 
   
-ofn <- '/Users/mmir/Library/CloudStorage/Dropbox/mean_gt_corr.png'
+ofn <- '/Users/mmir/Library/CloudStorage/Dropbox/mean_gt_corr_v2.png'
 
 ggsave(ofn)
 
