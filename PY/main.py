@@ -7,7 +7,7 @@ import pandas as pd
 from bgen_reader import open_bgen
 from pathlib import Path
 
-from prj.lib import g
+from prj.lib import d
 
 def make_df_of_iids_from_bgen_open_obj(bg_opn) :
     bg_opn_s = list(bg_opn.samples)
@@ -26,7 +26,7 @@ def open_bgen_ret_iid_df_and_prob_arr(bgen_fp) :
         pass
 
         ##
-        bgen_fp = '/var/genetics/ws/mahdimir/LOCAL/prj/imputed-genotype-corr-240317/med/plink_out/chr1.bgen'
+        bgen_fp = d.plink_out / 'chr1.bgen'
 
     ##
     bgo = open_bgen(bgen_fp)
@@ -38,7 +38,8 @@ def open_bgen_ret_iid_df_and_prob_arr(bgen_fp) :
     nd_p = bgo.read()
 
     ##
-    rsids = list(bgo.rsids)  # I had to make a list of it ow the code crashes I don't know why
+    # I had to make a list of it ow the code crashes I don't know why
+    rsids = list(bgo.rsids)
 
     ##
     assert len(rsids) == nd_p.shape[1]
