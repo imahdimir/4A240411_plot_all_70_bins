@@ -6,7 +6,7 @@
 import itertools
 import pandas as pd
 
-from prj.lib import d , f
+from prj.lib import d , f , v , fp , BINS
 
 def merge_all_flt_snps() :
     fns = list(d.flt_snps.glob('*.txt'))
@@ -24,8 +24,8 @@ def ret_all_snps_in_info_range(info_range_start) :
 
     dfs = pd.read_parquet(f.all_flt_snps)
 
-    msk = dfs[v.info_n_s].ge(sc)
-    msk &= dfs[v.info_n_s].lt(sc + .01)
+    msk = dfs[v.info_n].ge(sc)
+    msk &= dfs[v.info_n].lt(sc + .01)
 
     df = dfs[msk]
 
@@ -40,14 +40,11 @@ def return_all_iids() :
 
 def make_all_combinations_of_dsgs_n_hc() :
     gt = {
-            fp.dsg_dta : fp.dsg_by_info ,
-            fp.hc_dta  : fp.hc_by_info ,
+            fp.dsg : fp.dsg_i ,
+            fp.hc  : fp.hc_i ,
             }
 
-    info = [i / 100 for i in range(30 , 100 , 10)]
-    info += [.99]
-
-    prd = itertools.product(gt.items() , info)
+    prd = itertools.product(gt.items() , BINS)
 
     return prd
 
@@ -79,19 +76,6 @@ def merge_from_entire_genome(in_pat , out_pat , info_score) :
     _p = out_pat.as_posix().format(int(info_score * 100))
     df.to_parquet(_p , index = False)
 
-def merge_info_scores_from_entire_genome() :
-    prd = make_all_combinations_of_dsgs_n_hc()
-
-    for (in_pat , out_pat) , info_score in prd :
-        merge_from_entire_genome(in_pat , out_pat , info_score)
-
-def gat_pairs_ids_in_pairs(identifier) :
-    df = pd.read_csv(f.rel , sep = '\s+' , dtype = 'string')
-    msk = df['InfType'].eq(identifier)
-    df = df[msk]
-    df = df[['ID1' , 'ID2']]
-    return df
-
 def main() :
     pass
 
@@ -99,13 +83,16 @@ def main() :
     merge_all_flt_snps()
 
     ##
-    merge_info_scores_from_entire_genome()
+    prd = make_all_combinations_of_dsgs_n_hc()
+
+    for (in_pat , out_pat) , info_score in prd :
+        merge_from_entire_genome(in_pat , out_pat , info_score)
 
     ##
 
     ##
 
-def testing_area() :
+def _test() :
     pass
 
     ##
@@ -118,11 +105,14 @@ def testing_area() :
     dft = ret_all_snps_in_info_range(.9)
 
     ##
-    merge_from_entire_genome(fp.dsg_dta , fp.dsg_by_info , .9)
+    merge_from_entire_genome(fp.dsg , fp.dsg_i , .9)
 
     ##
     p = fp.dsg_by_info.as_posix().format(90)
     df = pd.read_parquet(p)
+
+    ##
+    ls1 = list(make_all_combinations_of_dsgs_n_hc())
 
     ##
     df = df.drop_duplicates()

@@ -17,6 +17,7 @@ class Dir :
 
     inp = data / 'inp'
     med = data / 'med'
+    out = data / 'out'
 
     plink_out = inp / 'plink_out'
     flt_snps = inp / 'flt_snps'
@@ -24,25 +25,62 @@ class Dir :
     dsg = med / 'dsg'
     hc = med / 'hc'
 
+    dsg_i = med / 'dsg_i'
+    hc_i = med / 'hc_i'
+
+    fs_dsg_corr = out / 'FS_dsg_corr'
+    fs_hc_corr = out / 'FS_hc_corr'
+    po_dsg_corr = out / 'PO_dsg_corr'
+    po_hc_corr = out / 'PO_hc_corr'
+
 d = Dir()
 
 class File :
-    all_flt_snps = d.med / 'all_flt_snps.txt'
+    fs_po_ids_txt = d.inp / 'fs_po_ids.txt'
+
+    all_flt_snps = d.med / 'all_flt_snps.prq'
+
+    rel = '/disk/genetics/ukb/alextisyoung/haplotypes/relatives/bedfiles/hap.kin0'
+
+    corrs = d.out / 'corrs.xlsx'
 
 f = File()
 
 class FilePattern :
     plink_out = d.plink_out.as_posix() + '/c{chr}.bgen'
 
+    dsg = d.dsg / 'c{}.prq'
+    hc = d.hc / 'c{}.prq'
+
+    dsg_i = d.dsg_i / 'i{}.prq'
+    hc_i = d.hc_i / 'i{}.prq'
+
+    fs_dsg_corr = d.fs_dsg_corr / 'i{}.xlsx'
+    fs_hc_corr = d.fs_hc_corr / 'i{}.xlsx'
+    po_dsg_corr = d.po_dsg_corr / 'i{}.xlsx'
+    po_hc_corr = d.po_hc_corr / 'i{}.xlsx'
+
 fp = FilePattern()
 
 class Vars :
-    maf_n = '5'
     info_n = '7'
-    rsid_n = '1'
+    iid = 'IID'
+    rsid_n_s = '1'
 
-    msk = 'msk'
-    ms1 = 'ms1'
-    chr = 'chr'
+    info_score = 'info_score'
+    rsid = 'rsid'
+    corr = 'corr'
+    n_na = 'n_na'
+    n_snps = 'n_snps'
+    inftype = 'InfType'
+    genotype = 'Genotype'
+    median = 'median'
+    mean = 'mean'
+    std = 'std'
+    min = 'min'
+    q1 = '25%'
+    q3 = '75%'
+    max = 'max'
+    info_pct = 'Info %'
 
 v = Vars()
